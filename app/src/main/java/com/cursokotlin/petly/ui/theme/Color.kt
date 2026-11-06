@@ -2,10 +2,20 @@ package com.cursokotlin.petly.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val PetlyGreenDark = Color(0xFF005144)
+val PetlyGreenMid = Color(0xFF0A6B5C)
+val PetlyGreenCircle = Color(0xFF0B6C5F)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val PetlyTeal = Color(0xFF00BAA1)
+val PetlyTealDark = Color(0xFF007C6D)
+val PetlyOrange = Color(0xFFE65100)
+
+val PetlyScreenBackground = Color(0xFFF4F8F7)
+val PetlyInputBackground = Color(0xFFF2FAF9)
+val PetlyBorder = Color(0xFFD3EBE9)
+val PetlyChipVaccinated = Color(0xFFE8F5E9)
+
+// Estimados (no medidos): ajústalos con el Figma.
+val PetlyTextPrimary = Color(0xFF1B2B28)
+val PetlyTextSecondary = Color(0xFF6B7C79)
+val PetlyError = Color(0xFFD32F2F)
