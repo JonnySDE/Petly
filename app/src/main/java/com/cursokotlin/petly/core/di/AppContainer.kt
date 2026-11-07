@@ -3,8 +3,11 @@ package com.cursokotlin.petly.core.di
 import android.content.Context
 import com.cursokotlin.petly.BuildConfig
 import com.cursokotlin.petly.core.network.AuthInterceptor
+import com.cursokotlin.petly.data.datasource.AuthApi
 import com.cursokotlin.petly.data.local.SessionStorage
 import com.cursokotlin.petly.data.local.SessionStorageImpl
+import com.cursokotlin.petly.data.repository.AuthRepositoryImpl
+import com.cursokotlin.petly.domain.repository.AuthRepository
 import java.time.Clock
 import java.util.concurrent.TimeUnit
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -14,7 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-
+import retrofit2.create
 
 @OptIn(ExperimentalSerializationApi::class)
 class AppContainer(context: Context) {
@@ -60,6 +63,10 @@ class AppContainer(context: Context) {
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
+
+    private val authApi: AuthApi by lazy { retrofit.create<AuthApi>() }
+
+    val authRepository: AuthRepository by lazy { AuthRepositoryImpl(authApi, sessionStorage) }
 
     private companion object {
         const val PREFS_SESION = "petly_session"
