@@ -69,6 +69,8 @@ fun PetlyNavHost(
 
             HomeRoute(
                 viewModel = viewModel,
+                onMascotaClick = { /* commit 10: ficha de detalle */ },
+                onAgregarClick = { /* commit 11: formulario */ },
                 onSesionCerrada = { navController.navegarLimpiandoPila(Routes.LOGIN) },
             )
         }

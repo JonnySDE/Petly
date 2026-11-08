@@ -36,4 +36,20 @@
     <string name="error_validation">Revisa los datos ingresados</string>
     <string name="error_server">El servidor tuvo un problema. Inténtalo más tarde</string>
     <string name="error_unknown">Ocurrió un error inesperado</string>
+    <string name="home_greeting">¡Hola de nuevo!</string>
+    <string name="home_title">Mis Mascotas</string>
+    <string name="home_empty_title">Aún no tienes mascotas</string>
+    <string name="home_empty_subtitle">Toca el botón + para agregar a tu primera mascota</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_add_pet">Agregar mascota</string>
+    <string name="chip_vaccinated">Vacunado</string>
+    <string name="chip_not_vaccinated">Sin vacuna</string>
+    <string name="chip_fed">Ya comió</string>
+    <string name="chip_not_fed">Sin comida</string>
+    <string name="feeding_pending_today">Alimentación pendiente hoy</string>
+    <plurals name="age_years">
+        <item quantity="one">%d año</item>
+        <item quantity="other">%d años</item>
+    </plurals>
 </resources>

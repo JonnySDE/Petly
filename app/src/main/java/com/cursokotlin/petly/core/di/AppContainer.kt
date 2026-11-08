@@ -89,7 +89,7 @@ class AppContainer(context: Context) {
         initializer { RegisterViewModel(authRepository) }
     }
     val homeViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
-        initializer { HomeViewModel(authRepository) }
+        initializer { HomeViewModel(authRepository, mascotaRepository, clock) }
     }
 
     private companion object {
