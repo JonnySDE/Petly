@@ -12,6 +12,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
+import java.time.format.DateTimeParseException
 
 class SafeApiCallTest {
 
@@ -82,5 +83,9 @@ class SafeApiCallTest {
     @Test
     fun cualquierOtraExcepcionEsUnknown() {
         assertEquals(DataError.Unknown, IllegalStateException("inesperado").toDataError())
+    }
+    @Test
+    fun unaFechaMalFormadaEsSerialization() {
+        assertEquals(DataError.Serialization, DateTimeParseException("mala", "ayer", 0).toDataError())
     }
 }

@@ -9,6 +9,7 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+import java.time.format.DateTimeParseException
 
 private val errorJson = Json { ignoreUnknownKeys = true }
 
@@ -31,6 +32,7 @@ internal fun Throwable.toDataError(): DataError = when (this) {
     is IOException -> DataError.NoInternet
     is HttpException -> toHttpDataError()
     is SerializationException -> DataError.Serialization
+    is DateTimeParseException -> DataError.Serialization
     else -> DataError.Unknown
 }
 

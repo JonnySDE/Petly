@@ -24,6 +24,9 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.cursokotlin.petly.presentations.viewmodels.LoginViewModel
 import com.cursokotlin.petly.presentations.viewmodels.RegisterViewModel
 import com.cursokotlin.petly.presentations.viewmodels.HomeViewModel
+import com.cursokotlin.petly.data.datasource.MascotaApi
+import com.cursokotlin.petly.data.repository.MascotaRepositoryImpl
+import com.cursokotlin.petly.domain.repository.MascotaRepository
 
 @OptIn(ExperimentalSerializationApi::class)
 class AppContainer(context: Context) {
@@ -73,6 +76,10 @@ class AppContainer(context: Context) {
     private val authApi: AuthApi by lazy { retrofit.create<AuthApi>() }
 
     val authRepository: AuthRepository by lazy { AuthRepositoryImpl(authApi, sessionStorage) }
+
+    private val mascotaApi: MascotaApi by lazy { retrofit.create<MascotaApi>() }
+
+    val mascotaRepository: MascotaRepository by lazy { MascotaRepositoryImpl(mascotaApi) }
 
     val loginViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
         initializer { LoginViewModel(authRepository) }
