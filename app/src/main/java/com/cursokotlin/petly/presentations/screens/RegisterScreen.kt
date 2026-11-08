@@ -36,6 +36,7 @@ import com.cursokotlin.petly.presentations.components.AuthFooterLink
 import com.cursokotlin.petly.presentations.components.AuthHeader
 import com.cursokotlin.petly.presentations.components.PetlyBackground
 import com.cursokotlin.petly.presentations.components.PetlyCard
+import com.cursokotlin.petly.presentations.components.PetlyIcon
 import com.cursokotlin.petly.presentations.components.PetlyPasswordField
 import com.cursokotlin.petly.presentations.components.PetlyPrimaryButton
 import com.cursokotlin.petly.presentations.components.PetlySheet
@@ -118,7 +119,7 @@ fun RegisterScreen(
                             value = uiState.nombre,
                             onValueChange = onNombreChange,
                             errorMessage = uiState.nombreError?.let { stringResource(it) },
-                            leadingIcon = { Icon(painterResource(R.drawable.ic_person), contentDescription = null) },
+                            leadingIcon = { PetlyIcon(R.drawable.ic_person) },
                             keyboardOptions = KeyboardOptions(
                                 capitalization = KeyboardCapitalization.Words,
                                 imeAction = ImeAction.Next,
@@ -130,7 +131,7 @@ fun RegisterScreen(
                             value = uiState.correo,
                             onValueChange = onCorreoChange,
                             errorMessage = uiState.correoError?.let { stringResource(it) },
-                            leadingIcon = { Icon(painterResource(R.drawable.ic_email), contentDescription = null) },
+                            leadingIcon = { PetlyIcon(R.drawable.ic_email) },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Email,
                                 imeAction = ImeAction.Next,

@@ -8,11 +8,13 @@ import com.cursokotlin.petly.domain.repository.AuthRepository
 class FakeAuthRepository : AuthRepository {
     var resultadoLogin: AppResult<User> = AppResult.Success(User("u1", "Ana", "ana@correo.com"))
     var resultadoRegistro: AppResult<Unit> = AppResult.Success(Unit)
+    var nombre: String? = null
 
     var llamadasLogin = 0
     var ultimoLogin: Pair<String, String>? = null
     var llamadasRegistro = 0
     var ultimoRegistro: Triple<String, String, String>? = null
+    var llamadasCerrarSesion = 0
 
     override suspend fun registrar(nombre: String, correo: String, contrasena: String): AppResult<Unit> {
         llamadasRegistro++
@@ -26,9 +28,11 @@ class FakeAuthRepository : AuthRepository {
         return resultadoLogin
     }
 
-    override fun cerrarSesion() = Unit
+    override fun cerrarSesion() {
+        llamadasCerrarSesion++
+    }
 
     override fun haySesion(): Boolean = false
 
-    override fun nombreUsuario(): String? = null
+    override fun nombreUsuario(): String? = nombre
 }

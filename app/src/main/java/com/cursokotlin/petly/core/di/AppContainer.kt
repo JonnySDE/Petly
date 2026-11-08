@@ -23,6 +23,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.cursokotlin.petly.presentations.viewmodels.LoginViewModel
 import com.cursokotlin.petly.presentations.viewmodels.RegisterViewModel
+import com.cursokotlin.petly.presentations.viewmodels.HomeViewModel
 
 @OptIn(ExperimentalSerializationApi::class)
 class AppContainer(context: Context) {
@@ -79,6 +80,9 @@ class AppContainer(context: Context) {
 
     val registerViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
         initializer { RegisterViewModel(authRepository) }
+    }
+    val homeViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
+        initializer { HomeViewModel(authRepository) }
     }
 
     private companion object {
