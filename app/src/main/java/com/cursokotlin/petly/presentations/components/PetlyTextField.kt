@@ -20,6 +20,7 @@ import com.cursokotlin.petly.ui.theme.PetlyError
 import com.cursokotlin.petly.ui.theme.PetlyInputBackground
 import com.cursokotlin.petly.ui.theme.PetlyTealDark
 import com.cursokotlin.petly.ui.theme.PetlyTextPrimary
+import androidx.compose.foundation.text.KeyboardActions
 
 @Composable
 fun PetlyTextField(
@@ -35,6 +36,7 @@ fun PetlyTextField(
     readOnly: Boolean = false,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     Column(modifier = modifier) {
@@ -45,6 +47,7 @@ fun PetlyTextField(
         )
         Spacer(modifier = Modifier.height(6.dp))
         OutlinedTextField(
+            keyboardActions = keyboardActions,
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),

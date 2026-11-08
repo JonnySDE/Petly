@@ -18,6 +18,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.create
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.cursokotlin.petly.presentations.viewmodels.LoginViewModel
+import com.cursokotlin.petly.presentations.viewmodels.RegisterViewModel
 
 @OptIn(ExperimentalSerializationApi::class)
 class AppContainer(context: Context) {
@@ -67,6 +72,14 @@ class AppContainer(context: Context) {
     private val authApi: AuthApi by lazy { retrofit.create<AuthApi>() }
 
     val authRepository: AuthRepository by lazy { AuthRepositoryImpl(authApi, sessionStorage) }
+
+    val loginViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
+        initializer { LoginViewModel(authRepository) }
+    }
+
+    val registerViewModelFactory: ViewModelProvider.Factory = viewModelFactory {
+        initializer { RegisterViewModel(authRepository) }
+    }
 
     private companion object {
         const val PREFS_SESION = "petly_session"
