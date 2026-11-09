@@ -28,9 +28,20 @@ fun MascotaAvatar(
 }
 
 @DrawableRes
-fun avatarFor(especie: String): Int = when (especie.trim().lowercase()) {
-    "perro" -> R.drawable.ic_avatar_perro
-    "gato" -> R.drawable.ic_avatar_gato
-    "ave" -> R.drawable.ic_avatar_ave
+fun avatarFor(especie: String): Int = when (normalizar(especie)) {
+    "perro", "perros" -> R.drawable.ic_avatar_perro
+    "gato", "gatos" -> R.drawable.ic_avatar_gato
+    "ave", "aves" -> R.drawable.ic_avatar_ave
+    "pez", "peces" -> R.drawable.ic_avatar_pez
+    "conejo", "conejos" -> R.drawable.ic_avatar_conejo
+    "hamster", "hamsters" -> R.drawable.ic_avatar_hamster
+    "tortuga", "tortugas" -> R.drawable.ic_avatar_tortuga
+    "iguana", "iguanas" -> R.drawable.ic_avatar_iguana
+    "serpiente", "serpientes" -> R.drawable.ic_avatar_serpiente
+    "tarantula", "tarantulas" -> R.drawable.ic_avatar_tarantula
     else -> R.drawable.ic_avatar_mascota
 }
+
+private fun normalizar(texto: String): String =
+    java.text.Normalizer.normalize(texto.trim().lowercase(), java.text.Normalizer.Form.NFD)
+        .replace(Regex("\\p{Mn}+"), "")

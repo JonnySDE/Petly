@@ -22,7 +22,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /** Especies que ofrece el selector. La API acepta cualquier texto. */
-val ESPECIES_DISPONIBLES = listOf("Perro", "Gato", "Ave", "Otro")
+val ESPECIES_DISPONIBLES = listOf(
+    "Perro", "Gato", "Ave", "Pez", "Conejo", "Hámster",
+    "Tortuga", "Iguana", "Serpiente", "Tarántula", "Otro",
+)
 
 data class FormUiState(
     val modoEdicion: Boolean = false,
