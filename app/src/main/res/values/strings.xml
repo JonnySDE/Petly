@@ -52,4 +52,37 @@
         <item quantity="one">%d año</item>
         <item quantity="other">%d años</item>
     </plurals>
+    <string name="detail_title">Ficha de Mascota</string>
+    <string name="detail_vet_info">Información veterinaria</string>
+    <string name="detail_last_visit">Última visita al veterinario</string>
+    <string name="detail_no_visits">Sin visitas registradas</string>
+    <string name="detail_feeding_section">Control de alimentación diaria</string>
+    <string name="feeding_fed_today">¡Ya comió hoy!</string>
+    <string name="feeding_type">Tipo</string>
+    <string name="feeding_amount">Cantidad</string>
+    <string name="feeding_time">Hora registro</string>
+    <string name="feeding_last_record">Último registro</string>
+    <string name="feeding_no_records">Aún no hay registros de alimentación</string>
+    <string name="label_value">%1$s: %2$s</string>
+    <string name="action_register_feeding">Registrar Nueva Comida</string>
+    <string name="action_edit_pet">Editar Datos de Mascota</string>
+    <string name="action_back">Volver</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="form_title_new">Nueva Mascota</string>
+    <string name="form_title_edit">Editar Mascota</string>
+    <string name="label_pet_name">Nombre de la mascota</string>
+    <string name="label_species">Especie</string>
+    <string name="label_age">Edad (años)</string>
+    <string name="form_vaccination_card">Cartilla de vacunación</string>
+    <string name="form_vaccinated_on">Vacunación al día</string>
+    <string name="form_vaccinated_off">Vacunas pendientes</string>
+    <string name="label_last_visit">Última visita veterinaria</string>
+    <string name="form_no_date">Sin fecha</string>
+    <string name="form_remove_date">Quitar fecha</string>
+    <string name="action_save_pet">Guardar Mascota</string>
+    <string name="action_update_changes">Actualizar Cambios</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_accept">Aceptar</string>
+    <string name="pet_created">Mascota registrada</string>
+    <string name="pet_updated">Mascota actualizada</string>
 </resources>

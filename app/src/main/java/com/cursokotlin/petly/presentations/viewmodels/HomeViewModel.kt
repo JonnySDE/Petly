@@ -43,6 +43,8 @@ class HomeViewModel(
 
     fun onReintentarClick() = cargarMascotas()
 
+    fun onActualizar() = cargarMascotas()
+
     fun onCerrarSesionClick() {
         authRepository.cerrarSesion()
         _uiState.update { it.copy(sesionCerrada = true) }

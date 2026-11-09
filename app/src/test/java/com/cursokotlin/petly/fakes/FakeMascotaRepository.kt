@@ -12,18 +12,40 @@ class FakeMascotaRepository : MascotaRepository {
     var resultadoLista: AppResult<List<Mascota>> = AppResult.Success(emptyList())
     var llamadasLista = 0
 
+    var resultadoDetalle: AppResult<Mascota> = AppResult.Failure(DataError.NotFound)
+    var llamadasDetalle = 0
+    var ultimoIdConsultado: String? = null
+
+    var resultadoCrear: AppResult<Mascota> = AppResult.Failure(DataError.Unknown)
+    var llamadasCrear = 0
+    var ultimoCreado: MascotaInput? = null
+
+    var resultadoEditar: AppResult<Mascota> = AppResult.Failure(DataError.Unknown)
+    var llamadasEditar = 0
+    var ultimaEdicion: Pair<String, MascotaInput>? = null
+
     override suspend fun obtenerMascotas(): AppResult<List<Mascota>> {
         llamadasLista++
         return resultadoLista
     }
 
-    override suspend fun obtenerMascota(id: String): AppResult<Mascota> = AppResult.Failure(DataError.Unknown)
+    override suspend fun obtenerMascota(id: String): AppResult<Mascota> {
+        llamadasDetalle++
+        ultimoIdConsultado = id
+        return resultadoDetalle
+    }
 
-    override suspend fun crearMascota(datos: MascotaInput): AppResult<Mascota> =
-        AppResult.Failure(DataError.Unknown)
+    override suspend fun crearMascota(datos: MascotaInput): AppResult<Mascota> {
+        llamadasCrear++
+        ultimoCreado = datos
+        return resultadoCrear
+    }
 
-    override suspend fun editarMascota(id: String, datos: MascotaInput): AppResult<Mascota> =
-        AppResult.Failure(DataError.Unknown)
+    override suspend fun editarMascota(id: String, datos: MascotaInput): AppResult<Mascota> {
+        llamadasEditar++
+        ultimaEdicion = id to datos
+        return resultadoEditar
+    }
 
     override suspend fun registrarAlimentacion(
         id: String,

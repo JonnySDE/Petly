@@ -156,4 +156,16 @@ class HomeViewModelTest {
 
         assertFalse(viewModel.uiState.value.sesionCerrada)
     }
+
+    @Test
+    fun actualizarVuelveAPedirLasMascotas() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna))
+        val viewModel = crearViewModel()
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+
+        viewModel.onActualizar()
+
+        assertEquals(2, viewModel.uiState.value.mascotas.size)
+        assertEquals(2, mascotas.llamadasLista)
+    }
 }

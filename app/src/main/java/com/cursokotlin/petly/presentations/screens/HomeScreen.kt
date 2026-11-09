@@ -56,6 +56,10 @@ import com.cursokotlin.petly.ui.theme.PetlyTheme
 @Composable
 fun HomeRoute(
     viewModel: HomeViewModel,
+    actualizar: Boolean,
+    onActualizarConsumido: () -> Unit,
+    mensajeExterno: Int?,
+    onMensajeExternoMostrado: () -> Unit,
     onMascotaClick: (String) -> Unit,
     onAgregarClick: () -> Unit,
     onSesionCerrada: () -> Unit,
@@ -68,6 +72,22 @@ fun HomeRoute(
         if (mensaje != null) {
             snackbarHostState.showSnackbar(mensaje)
             viewModel.onMensajeMostrado()
+        }
+    }
+
+    // Otra pantalla cambió la lista (se creó, editó o eliminó una mascota).
+    LaunchedEffect(actualizar) {
+        if (actualizar) {
+            viewModel.onActualizar()
+            onActualizarConsumido()
+        }
+    }
+
+    val textoExterno = mensajeExterno?.let { stringResource(it) }
+    LaunchedEffect(textoExterno) {
+        if (textoExterno != null) {
+            snackbarHostState.showSnackbar(textoExterno)
+            onMensajeExternoMostrado()
         }
     }
 
