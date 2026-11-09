@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.cursokotlin.petly.R
 
+data class HomeResumen(val total: Int = 0, val vacunadas: Int = 0, val alimentadas: Int = 0)
+
 data class HomeUiState(
     val nombreUsuario: String = "",
     val iniciales: String = "",
@@ -25,7 +27,14 @@ data class HomeUiState(
     @StringRes val errorMessage: Int? = null,
     @StringRes val mensaje: Int? = null,
     val sesionCerrada: Boolean = false,
-)
+){
+    val resumen: HomeResumen
+        get() = HomeResumen(
+            total = mascotas.size,
+            vacunadas = mascotas.count { it.estaVacunado },
+            alimentadas = mascotas.count { it.yaComio },
+        )
+}
 
 class HomeViewModel(
     private val authRepository: AuthRepository,

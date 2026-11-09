@@ -24,6 +24,8 @@ import com.cursokotlin.petly.presentations.viewmodels.FormViewModel
 import com.cursokotlin.petly.presentations.viewmodels.HomeViewModel
 import com.cursokotlin.petly.presentations.viewmodels.LoginViewModel
 import com.cursokotlin.petly.presentations.viewmodels.RegisterViewModel
+import com.cursokotlin.petly.presentations.screens.FeedingRoute
+import com.cursokotlin.petly.presentations.viewmodels.FeedingViewModel
 
 /** Clave con la que el registro le avisa al login que la cuenta se creó. */
 private const val KEY_REGISTRO_EXITOSO = "registro_exitoso"
@@ -118,8 +120,25 @@ fun PetlyNavHost(
                 onMensajeExternoMostrado = { entrada.savedStateHandle[KEY_MENSAJE] = null },
                 onBack = { navController.popBackStack() },
                 onEditarClick = { navController.navigate(Routes.form(id)) },
-                onRegistrarComidaClick = { /* commit 13: registro de alimentación */ },
+                onRegistrarComidaClick = { navController.navigate(Routes.feeding(id)) },
                 onEliminada = { mensaje ->
+                    navController.avisarCambio(mensaje)
+                    navController.popBackStack()
+                },
+                onSesionCerrada = { navController.navegarLimpiandoPila(Routes.LOGIN) },
+            )
+        }
+        composable(
+            route = Routes.FEEDING,
+            arguments = listOf(navArgument(Routes.ARG_ID) { type = NavType.StringType }),
+        ) { entrada ->
+            val id = entrada.arguments?.getString(Routes.ARG_ID).orEmpty()
+            val viewModel: FeedingViewModel = viewModel(factory = container.feedingViewModelFactory(id))
+
+            FeedingRoute(
+                viewModel = viewModel,
+                onBack = { navController.popBackStack() },
+                onGuardado = { mensaje ->
                     navController.avisarCambio(mensaje)
                     navController.popBackStack()
                 },

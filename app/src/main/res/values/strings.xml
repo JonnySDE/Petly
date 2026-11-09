@@ -88,4 +88,16 @@
     <string name="delete_title">¿Eliminar a %1$s?</string>
     <string name="delete_message">Esta acción no se puede deshacer.</string>
     <string name="pet_deleted">Mascota eliminada</string>
+    <string name="feeding_title">Registrar Alimentación</string>
+    <string name="feeding_control_daily">Control diario</string>
+    <string name="label_food_type">Tipo de alimento</string>
+    <string name="label_portion">Cantidad / porción</string>
+    <string name="label_record_time">Hora del registro</string>
+    <string name="feeding_time_auto">%1$s (Automática)</string>
+    <string name="action_confirm_feeding">Confirmar Alimentación</string>
+    <string name="feeding_registered">Alimentación registrada</string>
+    <string name="summary_pets">Mascotas</string>
+    <string name="summary_vaccinated">Vacunados</string>
+    <string name="summary_fed">Alimentados</string>
+    <string name="summary_ratio">%1$d/%2$d</string>
 </resources>

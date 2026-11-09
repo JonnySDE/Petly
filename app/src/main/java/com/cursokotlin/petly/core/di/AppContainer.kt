@@ -29,6 +29,7 @@ import com.cursokotlin.petly.data.repository.MascotaRepositoryImpl
 import com.cursokotlin.petly.domain.repository.MascotaRepository
 import com.cursokotlin.petly.presentations.viewmodels.DetailViewModel
 import com.cursokotlin.petly.presentations.viewmodels.FormViewModel
+import com.cursokotlin.petly.presentations.viewmodels.FeedingViewModel
 
 @OptIn(ExperimentalSerializationApi::class)
 class AppContainer(context: Context) {
@@ -100,6 +101,9 @@ class AppContainer(context: Context) {
 
     fun formViewModelFactory(mascotaId: String?): ViewModelProvider.Factory = viewModelFactory {
         initializer { FormViewModel(mascotaId, mascotaRepository, authRepository, clock) }
+    }
+    fun feedingViewModelFactory(mascotaId: String): ViewModelProvider.Factory = viewModelFactory {
+        initializer { FeedingViewModel(mascotaId, mascotaRepository, authRepository, clock) }
     }
 
     private companion object {

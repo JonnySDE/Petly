@@ -52,6 +52,10 @@ import com.cursokotlin.petly.presentations.viewmodels.MascotaItemUi
 import com.cursokotlin.petly.ui.theme.PetlyOrange
 import com.cursokotlin.petly.ui.theme.PetlyTheme
 import com.cursokotlin.petly.presentations.components.PetlyConfirmDialog
+import com.cursokotlin.petly.presentations.components.ResumenCard
+import com.cursokotlin.petly.presentations.viewmodels.HomeResumen
+import com.cursokotlin.petly.ui.theme.PetlyGreenText
+import com.cursokotlin.petly.ui.theme.PetlyTextPrimary
 
 
 /** Conecta el ViewModel con la pantalla y reacciona a mensajes y navegación. */
@@ -132,6 +136,9 @@ fun HomeScreen(
                 nombre = uiState.nombreUsuario,
                 onCerrarSesionClick = onCerrarSesionClick,
             )
+            if (uiState.resumen.total > 0) {
+                HomeResumenRow(resumen = uiState.resumen)
+            }
             PetlySheet(modifier = Modifier.weight(1f).fillMaxWidth()) {
                 Text(
                     text = stringResource(R.string.home_title),
@@ -257,5 +264,37 @@ private fun HomeHeader(
                 tint = Color.White,
             )
         }
+    }
+}
+
+@Composable
+private fun HomeResumenRow(resumen: HomeResumen) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, bottom = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        ResumenCard(
+            valor = resumen.total.toString(),
+            etiqueta = stringResource(R.string.summary_pets),
+            icono = R.drawable.ic_mascotaspng,
+            colorValor = PetlyTextPrimary,
+            modifier = Modifier.weight(1f),
+        )
+        ResumenCard(
+            valor = stringResource(R.string.summary_ratio, resumen.vacunadas, resumen.total),
+            etiqueta = stringResource(R.string.summary_vaccinated),
+            icono = R.drawable.ic_vaccine,
+            colorValor = PetlyGreenText,
+            modifier = Modifier.weight(1f),
+        )
+        ResumenCard(
+            valor = stringResource(R.string.summary_ratio, resumen.alimentadas, resumen.total),
+            etiqueta = stringResource(R.string.summary_fed),
+            icono = R.drawable.ic_alimentados,
+            colorValor = PetlyOrange,
+            modifier = Modifier.weight(1f),
+        )
     }
 }

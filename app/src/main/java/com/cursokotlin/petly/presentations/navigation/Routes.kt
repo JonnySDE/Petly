@@ -11,6 +11,10 @@ object Routes {
 
     const val FORM = "form?$ARG_ID={$ARG_ID}"
 
+    const val FEEDING = "feeding/{$ARG_ID}"
+
+    fun feeding(id: String) = "feeding/$id"
+
     fun detail(id: String) = "detail/$id"
 
     fun form(id: String? = null) = if (id == null) "form" else "form?$ARG_ID=$id"

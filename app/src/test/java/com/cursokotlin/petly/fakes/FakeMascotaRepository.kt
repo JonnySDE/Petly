@@ -27,6 +27,10 @@ class FakeMascotaRepository : MascotaRepository {
     var llamadasEliminar = 0
     var ultimoEliminado: String? = null
 
+    var resultadoAlimentacion: AppResult<Mascota> = AppResult.Failure(DataError.Unknown)
+    var llamadasAlimentacion = 0
+    var ultimaAlimentacionRegistrada: Pair<String, UltimaAlimentacion>? = null
+
     override suspend fun obtenerMascotas(): AppResult<List<Mascota>> {
         llamadasLista++
         return resultadoLista
@@ -53,7 +57,11 @@ class FakeMascotaRepository : MascotaRepository {
     override suspend fun registrarAlimentacion(
         id: String,
         alimentacion: UltimaAlimentacion,
-    ): AppResult<Mascota> = AppResult.Failure(DataError.Unknown)
+    ): AppResult<Mascota> {
+        llamadasAlimentacion++
+        ultimaAlimentacionRegistrada = id to alimentacion
+        return resultadoAlimentacion
+    }
 
     override suspend fun eliminarMascota(id: String): AppResult<Unit> {
         llamadasEliminar++

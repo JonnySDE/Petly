@@ -237,4 +237,37 @@ class HomeViewModelTest {
         viewModel.onConfirmarEliminar()
         assertEquals(1, mascotas.llamadasEliminar)
     }
+    @Test
+    fun elResumenCuentaMascotasVacunadasYAlimentadas() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+
+        val resumen = crearViewModel().uiState.value.resumen
+
+        assertEquals(2, resumen.total)
+        assertEquals(2, resumen.vacunadas)   // luna y bob están vacunados
+        assertEquals(1, resumen.alimentadas) // solo bob comió hoy
+    }
+
+    @Test
+    fun elResumenConListaVaciaEstaEnCeros() {
+        val resumen = crearViewModel().uiState.value.resumen
+
+        assertEquals(0, resumen.total)
+        assertEquals(0, resumen.vacunadas)
+        assertEquals(0, resumen.alimentadas)
+    }
+
+    @Test
+    fun alEliminarUnaMascotaElResumenSeActualiza() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+        mascotas.resultadoEliminar = AppResult.Success(Unit)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick(viewModel.uiState.value.mascotas[1]) // bob
+
+        viewModel.onConfirmarEliminar()
+
+        val resumen = viewModel.uiState.value.resumen
+        assertEquals(1, resumen.total)
+        assertEquals(0, resumen.alimentadas)
+    }
 }
