@@ -119,7 +119,10 @@ fun PetlyNavHost(
                 onBack = { navController.popBackStack() },
                 onEditarClick = { navController.navigate(Routes.form(id)) },
                 onRegistrarComidaClick = { /* commit 13: registro de alimentación */ },
-                onEliminarClick = { /* commit 12: eliminar con confirmación */ },
+                onEliminada = { mensaje ->
+                    navController.avisarCambio(mensaje)
+                    navController.popBackStack()
+                },
                 onSesionCerrada = { navController.navegarLimpiandoPila(Routes.LOGIN) },
             )
         }

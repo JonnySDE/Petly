@@ -13,11 +13,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.cursokotlin.petly.R
 
 data class DetailUiState(
     val isLoading: Boolean = true,
     val mascota: MascotaDetalleUi? = null,
-    /** Error de carga SIN ficha que mostrar: la pantalla ofrece reintentar. */
+    val confirmarEliminar: Boolean = false,
+    val isDeleting: Boolean = false,
+    @StringRes val eliminadaMensaje: Int? = null,
     @StringRes val errorMessage: Int? = null,
     /** Mensaje para el Snackbar (un fallo al recargar con la ficha ya visible). */
     @StringRes val mensaje: Int? = null,
@@ -42,6 +45,34 @@ class DetailViewModel(
     fun onReintentarClick() = cargarMascota()
 
     fun onActualizar() = cargarMascota()
+    fun onEliminarClick() {
+        _uiState.update { it.copy(confirmarEliminar = true) }
+    }
+
+    fun onCancelarEliminar() {
+        if (_uiState.value.isDeleting) return
+        _uiState.update { it.copy(confirmarEliminar = false) }
+    }
+
+    fun onConfirmarEliminar() {
+        if (!_uiState.value.confirmarEliminar || _uiState.value.isDeleting) return
+        _uiState.update { it.copy(isDeleting = true) }
+        viewModelScope.launch {
+            when (val resultado = mascotaRepository.eliminarMascota(mascotaId)) {
+                is AppResult.Success -> _uiState.update {
+                    it.copy(isDeleting = false, confirmarEliminar = false, eliminadaMensaje = R.string.pet_deleted)
+                }
+                is AppResult.Failure -> {
+                    _uiState.update { it.copy(isDeleting = false, confirmarEliminar = false) }
+                    manejarError(resultado.error)
+                }
+            }
+        }
+    }
+
+    fun onEliminadaConsumida() {
+        _uiState.update { it.copy(eliminadaMensaje = null) }
+    }
 
     fun onMensajeMostrado() {
         _uiState.update { it.copy(mensaje = null) }

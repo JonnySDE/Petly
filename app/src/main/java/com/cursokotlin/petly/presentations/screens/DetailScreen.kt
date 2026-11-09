@@ -63,6 +63,7 @@ import com.cursokotlin.petly.ui.theme.PetlyRedText
 import com.cursokotlin.petly.ui.theme.PetlyTextSecondary
 import com.cursokotlin.petly.ui.theme.PetlyTheme
 import com.cursokotlin.petly.presentations.components.PetlyTopBar
+import com.cursokotlin.petly.presentations.components.PetlyConfirmDialog
 
 
 @Composable
@@ -75,7 +76,7 @@ fun DetailRoute(
     onBack: () -> Unit,
     onEditarClick: () -> Unit,
     onRegistrarComidaClick: () -> Unit,
-    onEliminarClick: () -> Unit,
+    onEliminada: (Int) -> Unit,
     onSesionCerrada: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -104,6 +105,12 @@ fun DetailRoute(
             onMensajeExternoMostrado()
         }
     }
+    LaunchedEffect(uiState.eliminadaMensaje) {
+        uiState.eliminadaMensaje?.let { mensajeEliminada ->
+            onEliminada(mensajeEliminada)
+            viewModel.onEliminadaConsumida()
+        }
+    }
 
     LaunchedEffect(uiState.sesionCerrada) {
         if (uiState.sesionCerrada) {
@@ -118,7 +125,9 @@ fun DetailRoute(
         onBack = onBack,
         onEditarClick = onEditarClick,
         onRegistrarComidaClick = onRegistrarComidaClick,
-        onEliminarClick = onEliminarClick,
+        onEliminarClick = viewModel::onEliminarClick,
+        onConfirmarEliminar = viewModel::onConfirmarEliminar,
+        onCancelarEliminar = viewModel::onCancelarEliminar,
         onReintentarClick = viewModel::onReintentarClick,
     )
 }
@@ -131,6 +140,8 @@ fun DetailScreen(
     onEditarClick: () -> Unit,
     onRegistrarComidaClick: () -> Unit,
     onEliminarClick: () -> Unit,
+    onConfirmarEliminar: () -> Unit,
+    onCancelarEliminar: () -> Unit,
     onReintentarClick: () -> Unit,
 ) {
     PetlyBackground {
@@ -158,6 +169,17 @@ fun DetailScreen(
                     else -> Unit
                 }
             }
+        }
+        val mascotaActual = uiState.mascota
+        if (uiState.confirmarEliminar && mascotaActual != null) {
+            PetlyConfirmDialog(
+                title = stringResource(R.string.delete_title, mascotaActual.nombre),
+                message = stringResource(R.string.delete_message),
+                confirmText = stringResource(R.string.action_delete),
+                onConfirm = onConfirmarEliminar,
+                onDismiss = onCancelarEliminar,
+                isLoading = uiState.isDeleting,
+            )
         }
         SnackbarHost(
             hostState = snackbarHostState,
@@ -319,60 +341,4 @@ private fun DatoLinea(@StringRes etiqueta: Int, valor: String) {
         style = MaterialTheme.typography.bodySmall,
         color = PetlyTextSecondary,
     )
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun DetailScreenYaComioPreview() {
-    PetlyTheme {
-        DetailScreen(
-            uiState = DetailUiState(
-                isLoading = false,
-                mascota = MascotaDetalleUi(
-                    id = "1",
-                    nombre = "Chester",
-                    especie = "Perro",
-                    edadAnios = 4,
-                    estaVacunado = true,
-                    ultimaVisita = "12 may 2026",
-                    yaComio = true,
-                    alimentacion = AlimentacionDetalleUi("Croquetas", "250 g", "5 nov 2026", "8:30 a. m."),
-                ),
-            ),
-            snackbarHostState = remember { SnackbarHostState() },
-            onBack = {},
-            onEditarClick = {},
-            onRegistrarComidaClick = {},
-            onEliminarClick = {},
-            onReintentarClick = {},
-        )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun DetailScreenPendientePreview() {
-    PetlyTheme {
-        DetailScreen(
-            uiState = DetailUiState(
-                isLoading = false,
-                mascota = MascotaDetalleUi(
-                    id = "2",
-                    nombre = "Chispa",
-                    especie = "Gato",
-                    edadAnios = 2,
-                    estaVacunado = false,
-                    ultimaVisita = null,
-                    yaComio = false,
-                    alimentacion = null,
-                ),
-            ),
-            snackbarHostState = remember { SnackbarHostState() },
-            onBack = {},
-            onEditarClick = {},
-            onRegistrarComidaClick = {},
-            onEliminarClick = {},
-            onReintentarClick = {},
-        )
-    }
 }

@@ -168,4 +168,73 @@ class HomeViewModelTest {
         assertEquals(2, viewModel.uiState.value.mascotas.size)
         assertEquals(2, mascotas.llamadasLista)
     }
+    @Test
+    fun pedirEliminarGuardaLaMascotaParaConfirmar() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick(viewModel.uiState.value.mascotas[0])
+        assertEquals("m1", viewModel.uiState.value.mascotaAEliminar?.id)
+        assertEquals(0, mascotas.llamadasEliminar)
+    }
+
+    @Test
+    fun cancelarEliminarLimpiaLaMascotaSinLlamarALaApi() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick(viewModel.uiState.value.mascotas[0])
+        viewModel.onCancelarEliminar()
+        assertNull(viewModel.uiState.value.mascotaAEliminar)
+        assertEquals(0, mascotas.llamadasEliminar)
+        assertEquals(2, viewModel.uiState.value.mascotas.size)
+    }
+
+    @Test
+    fun confirmarEliminarConExitoQuitaElElementoYAvisa() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+        mascotas.resultadoEliminar = AppResult.Success(Unit)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick(viewModel.uiState.value.mascotas[0])
+        viewModel.onConfirmarEliminar()
+        val estado = viewModel.uiState.value
+        assertEquals("m1", mascotas.ultimoEliminado)
+        assertEquals(listOf("Bob"), estado.mascotas.map { it.nombre })
+        assertNull(estado.mascotaAEliminar)
+        assertFalse(estado.isDeleting)
+        assertEquals(R.string.pet_deleted, estado.mensaje)
+    }
+
+    @Test
+    fun fallarAlEliminarConservaLaListaYMuestraElError() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+        mascotas.resultadoEliminar = AppResult.Failure(DataError.NoInternet)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick(viewModel.uiState.value.mascotas[0])
+        viewModel.onConfirmarEliminar()
+        val estado = viewModel.uiState.value
+        assertEquals(2, estado.mascotas.size)
+        assertNull(estado.mascotaAEliminar)
+        assertEquals(R.string.error_no_internet, estado.mensaje)
+        assertNull(estado.errorMessage)
+    }
+
+    @Test
+    fun noAutorizadoAlEliminarCierraLaSesion() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna))
+        mascotas.resultadoEliminar = AppResult.Failure(DataError.Unauthorized)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick(viewModel.uiState.value.mascotas[0])
+        viewModel.onConfirmarEliminar()
+        assertTrue(viewModel.uiState.value.sesionCerrada)
+    }
+
+    @Test
+    fun confirmarDosVecesSoloEliminaUnaVez() {
+        mascotas.resultadoLista = AppResult.Success(listOf(luna, bob))
+        mascotas.resultadoEliminar = AppResult.Success(Unit)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick(viewModel.uiState.value.mascotas[0])
+        viewModel.onConfirmarEliminar()
+        viewModel.onConfirmarEliminar()
+        assertEquals(1, mascotas.llamadasEliminar)
+    }
 }

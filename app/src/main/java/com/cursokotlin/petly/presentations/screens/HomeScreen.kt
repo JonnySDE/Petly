@@ -51,6 +51,8 @@ import com.cursokotlin.petly.presentations.viewmodels.HomeViewModel
 import com.cursokotlin.petly.presentations.viewmodels.MascotaItemUi
 import com.cursokotlin.petly.ui.theme.PetlyOrange
 import com.cursokotlin.petly.ui.theme.PetlyTheme
+import com.cursokotlin.petly.presentations.components.PetlyConfirmDialog
+
 
 /** Conecta el ViewModel con la pantalla y reacciona a mensajes y navegación. */
 @Composable
@@ -105,6 +107,9 @@ fun HomeRoute(
         onAgregarClick = onAgregarClick,
         onReintentarClick = viewModel::onReintentarClick,
         onCerrarSesionClick = viewModel::onCerrarSesionClick,
+        onEliminarClick = viewModel::onEliminarClick,
+        onConfirmarEliminar = viewModel::onConfirmarEliminar,
+        onCancelarEliminar = viewModel::onCancelarEliminar,
     )
 }
 
@@ -116,6 +121,9 @@ fun HomeScreen(
     onAgregarClick: () -> Unit,
     onReintentarClick: () -> Unit,
     onCerrarSesionClick: () -> Unit,
+    onEliminarClick: (MascotaItemUi) -> Unit,
+    onConfirmarEliminar: () -> Unit,
+    onCancelarEliminar: () -> Unit,
 ) {
     PetlyBackground {
         Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
@@ -150,12 +158,23 @@ fun HomeScreen(
                                 MascotaCard(
                                     mascota = mascota,
                                     onClick = { onMascotaClick(mascota.id) },
+                                    onEliminarClick = { onEliminarClick(mascota) }
                                 )
                             }
                         }
                     }
                 }
             }
+        }
+        uiState.mascotaAEliminar?.let { mascota ->
+            PetlyConfirmDialog(
+                title = stringResource(R.string.delete_title, mascota.nombre),
+                message = stringResource(R.string.delete_message),
+                confirmText = stringResource(R.string.action_delete),
+                onConfirm = onConfirmarEliminar,
+                onDismiss = onCancelarEliminar,
+                isLoading = uiState.isDeleting,
+            )
         }
 
         FloatingActionButton(
@@ -182,6 +201,7 @@ fun HomeScreen(
                 .navigationBarsPadding()
                 .padding(start = 16.dp, end = 16.dp, bottom = 96.dp),
         )
+
     }
 }
 
@@ -237,42 +257,5 @@ private fun HomeHeader(
                 tint = Color.White,
             )
         }
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun HomeScreenPreview() {
-    PetlyTheme {
-        HomeScreen(
-            uiState = HomeUiState(
-                nombreUsuario = "Jonathan Rodriguez",
-                iniciales = "JR",
-                mascotas = listOf(
-                    MascotaItemUi("1", "Chester", "Perro", 4, true, true, "Croquetas (250 g) • 8:30 a. m."),
-                    MascotaItemUi("2", "Chispa", "Gato", 2, false, false, null),
-                ),
-            ),
-            snackbarHostState = remember { SnackbarHostState() },
-            onMascotaClick = {},
-            onAgregarClick = {},
-            onReintentarClick = {},
-            onCerrarSesionClick = {},
-        )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun HomeScreenVaciaPreview() {
-    PetlyTheme {
-        HomeScreen(
-            uiState = HomeUiState(nombreUsuario = "Ana", iniciales = "A"),
-            snackbarHostState = remember { SnackbarHostState() },
-            onMascotaClick = {},
-            onAgregarClick = {},
-            onReintentarClick = {},
-            onCerrarSesionClick = {},
-        )
     }
 }

@@ -134,4 +134,71 @@ class DetailViewModelTest {
         assertEquals("Luna II", viewModel.uiState.value.mascota?.nombre)
         assertEquals(2, mascotas.llamadasDetalle)
     }
+    @Test
+    fun pedirEliminarAbreElDialogo() {
+        mascotas.resultadoDetalle = AppResult.Success(luna)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick()
+        assertTrue(viewModel.uiState.value.confirmarEliminar)
+        assertEquals(0, mascotas.llamadasEliminar)
+    }
+
+    @Test
+    fun cancelarEliminarCierraElDialogoSinLlamarALaApi() {
+        mascotas.resultadoDetalle = AppResult.Success(luna)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick()
+        viewModel.onCancelarEliminar()
+        assertFalse(viewModel.uiState.value.confirmarEliminar)
+        assertEquals(0, mascotas.llamadasEliminar)
+    }
+
+    @Test
+    fun confirmarEliminarConExitoPideVolverConElMensaje() {
+        mascotas.resultadoDetalle = AppResult.Success(luna)
+        mascotas.resultadoEliminar = AppResult.Success(Unit)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick()
+        viewModel.onConfirmarEliminar()
+        val estado = viewModel.uiState.value
+        assertEquals("m1", mascotas.ultimoEliminado)
+        assertEquals(R.string.pet_deleted, estado.eliminadaMensaje)
+        assertFalse(estado.confirmarEliminar)
+        assertFalse(estado.isDeleting)
+    }
+
+    @Test
+    fun fallarAlEliminarCierraElDialogoYMuestraElMensaje() {
+        mascotas.resultadoDetalle = AppResult.Success(luna)
+        mascotas.resultadoEliminar = AppResult.Failure(DataError.Timeout)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick()
+        viewModel.onConfirmarEliminar()
+        val estado = viewModel.uiState.value
+        assertFalse(estado.confirmarEliminar)
+        assertEquals(R.string.error_timeout, estado.mensaje)
+        assertNull(estado.eliminadaMensaje)
+        assertEquals("Luna", estado.mascota?.nombre)
+    }
+
+    @Test
+    fun noAutorizadoAlEliminarCierraLaSesion() {
+        mascotas.resultadoDetalle = AppResult.Success(luna)
+        mascotas.resultadoEliminar = AppResult.Failure(DataError.Unauthorized)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick()
+        viewModel.onConfirmarEliminar()
+        assertTrue(viewModel.uiState.value.sesionCerrada)
+    }
+
+    @Test
+    fun eliminadaConsumidaLimpiaElEvento() {
+        mascotas.resultadoDetalle = AppResult.Success(luna)
+        mascotas.resultadoEliminar = AppResult.Success(Unit)
+        val viewModel = crearViewModel()
+        viewModel.onEliminarClick()
+        viewModel.onConfirmarEliminar()
+        viewModel.onEliminadaConsumida()
+        assertNull(viewModel.uiState.value.eliminadaMensaje)
+    }
 }

@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,12 +39,19 @@ import com.cursokotlin.petly.ui.theme.PetlyOrangeChip
 import com.cursokotlin.petly.ui.theme.PetlyRedChip
 import com.cursokotlin.petly.ui.theme.PetlyRedText
 import com.cursokotlin.petly.ui.theme.PetlyTextSecondary
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MascotaCard(
     mascota: MascotaItemUi,
     onClick: () -> Unit,
+    onEliminarClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val forma = RoundedCornerShape(20.dp)
@@ -72,6 +82,13 @@ fun MascotaCard(
                         color = PetlyTextSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
+                    )
+                }
+                IconButton(onClick = onEliminarClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_delete),
+                        contentDescription = stringResource(R.string.action_delete),
+                        modifier = Modifier.size(24.dp)
                     )
                 }
                 PetlyIcon(id = R.drawable.ic_chevron_right)

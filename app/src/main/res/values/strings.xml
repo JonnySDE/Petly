@@ -85,4 +85,7 @@
     <string name="action_accept">Aceptar</string>
     <string name="pet_created">Mascota registrada</string>
     <string name="pet_updated">Mascota actualizada</string>
+    <string name="delete_title">¿Eliminar a %1$s?</string>
+    <string name="delete_message">Esta acción no se puede deshacer.</string>
+    <string name="pet_deleted">Mascota eliminada</string>
 </resources>
